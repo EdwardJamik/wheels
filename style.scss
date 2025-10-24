@@ -1,10 +1,10 @@
 @font-face {
-  font-family: "Instagram Sans Regular";
+  font-family: "Instagram Sans";
   font-style: normal;
   font-weight: normal;
   src:
     local("Instagram Sans Regular"),
-    url("./assets/font/Instagram Sans.woff") format("woff");
+    url("./assets/font/Instagram Sans.ttf") format("truetype");
 }
 
 @font-face {
@@ -13,7 +13,7 @@
   font-weight: normal;
   src:
     local("Instagram Sans Light"),
-    url("./assets/font/Instagram Sans Light.woff") format("woff");
+    url("./assets/font/Instagram Sans Light.ttf") format("truetype");
 }
 
 @font-face {
@@ -22,7 +22,7 @@
   font-weight: normal;
   src:
     local("Instagram Sans Medium"),
-    url("./assets/font/Instagram Sans Medium.woff") format("woff");
+    url("./assets/font/Instagram Sans Medium.ttf") format("truetype");
 }
 
 @font-face {
@@ -31,7 +31,7 @@
   font-weight: normal;
   src:
     local("Instagram Sans Bold"),
-    url("./assets/font/Instagram Sans Bold.woff") format("woff");
+    url("./assets/font/Instagram Sans Bold.ttf") format("truetype");
 }
 
 @font-face {
@@ -40,7 +40,7 @@
   font-weight: normal;
   src:
     local("Instagram Sans Headline Regular"),
-    url("./assets/font/Instagram Sans Headline.woff") format("woff");
+    url("./assets/font/Instagram Sans Headline.ttf") format("truetype");
 }
 
 .wheel-cover {
@@ -102,7 +102,7 @@
     content: "";
     position: absolute;
     place-self: start center;
-    top: 0vh;
+    top: 0.5vh;
     z-index: 3;
   }
 
@@ -142,7 +142,7 @@
       display: grid;
       font-family: Instagram Sans;
       font-weight: 700;
-      font-size: 1.4vh;
+      font-size: 1.5vh;
       line-height: 12px;
       text-align: left;
       grid-area: 1 / -1;
@@ -470,34 +470,8 @@ body {
     }
   }
 
-  button {
+  & .buttonContainer {
     position: relative;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    width: 100px;
-    color: #fff;
-    font-weight: 800;
-    font-family: "Instagram Sans", monospace;
-    width: 300px;
-    height: 60px;
-    background-color: #b8b8b8;
-
-    padding: 0;
-    margin: 6vh auto 0;
-    display: block;
-    color: rgba(0, 0, 0, 0.4);
-
-    &.active {
-      // animation: pulse 2s infinite;
-      background-image: url("./assets/images/blik_button.png");
-      background-position: center bottom;
-      background-repeat: no-repeat;
-      background-size: contain;
-      color: #ffffff;
-    }
-
     &::before {
       content: " ";
       position: absolute;
@@ -510,7 +484,35 @@ body {
       width: 126px;
       z-index: 1;
       left: 50%;
-      transform: translate(-50%, 0%);
+      transform: translate(-50%, 0%) !important;
+    }
+    button {
+      position: relative;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      width: 100px;
+      color: #fff;
+      font-weight: 800;
+      font-family: "Instagram Sans", monospace;
+      width: 300px;
+      height: 60px;
+      background-color: #b8b8b8;
+      isolation: isolate;
+      padding: 0;
+      margin: 6vh auto 0;
+      display: block;
+      color: rgba(0, 0, 0, 0.4);
+
+      &.active {
+        animation: pulse 2s infinite;
+        background-image: url("./assets/images/blik_button.png");
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size: contain;
+        color: #ffffff;
+      }
     }
   }
 
@@ -519,7 +521,7 @@ body {
       scale: 1;
     }
     50% {
-      scale: 1.02;
+      scale: 1.06;
     }
     100% {
       scale: 1;

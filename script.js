@@ -31,6 +31,188 @@ const chatLinks = {
   whatsapp: "https://wa.me/your_phone_number"
 };
 
+// Функція створення конфеті
+function createConfetti() {
+  const confettiContainer = document.createElement('div');
+  confettiContainer.className = 'confetti-container';
+  confettiContainer.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10000;
+    overflow: hidden;
+  `;
+  document.body.appendChild(confettiContainer);
+
+  const colors = ['#FFD700', '#FF6347', '#4169E1', '#32CD32', '#FF69B4', '#FFA500', '#9370DB', '#00CED1'];
+  const confettiCount = 150;
+
+  for (let i = 0; i < confettiCount; i++) {
+    const confetti = document.createElement('div');
+    const size = Math.random() * 10 + 5;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+    const animationDuration = Math.random() * 3 + 2;
+    const delay = Math.random() * 0.5;
+    const rotation = Math.random() * 360;
+    const rotationSpeed = Math.random() * 360 + 180;
+
+    confetti.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      background-color: ${color};
+      left: ${left}%;
+      top: -10%;
+      opacity: 0;
+      animation: confettiFall ${animationDuration}s ease-in ${delay}s forwards,
+                 confettiRotate ${animationDuration}s linear ${delay}s infinite;
+      transform: rotate(${rotation}deg);
+      border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+    `;
+
+    confettiContainer.appendChild(confetti);
+  }
+
+  // Додаємо анімації
+  if (!document.getElementById('confetti-styles')) {
+    const style = document.createElement('style');
+    style.id = 'confetti-styles';
+    style.textContent = `
+      @keyframes confettiFall {
+        0% {
+          top: -10%;
+          opacity: 1;
+        }
+        100% {
+          top: 110%;
+          opacity: 0;
+        }
+      }
+      
+      @keyframes confettiRotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Видаляємо конфеті через 5 секунд
+  setTimeout(() => {
+    confettiContainer.remove();
+  }, 5000);
+}
+
+// Функція створення спалахів світла
+function createSparkles() {
+  const sparkleContainer = document.createElement('div');
+  sparkleContainer.className = 'sparkle-container';
+  sparkleContainer.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9998;
+  `;
+  document.body.appendChild(sparkleContainer);
+
+  for (let i = 0; i < 20; i++) {
+    const sparkle = document.createElement('div');
+    const angle = (Math.PI * 2 * i) / 20;
+    const distance = 150;
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+
+    sparkle.style.cssText = `
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+      left: 50%;
+      top: 50%;
+      animation: sparkleOut 1s ease-out forwards;
+      animation-delay: ${i * 0.05}s;
+    `;
+
+    sparkleContainer.appendChild(sparkle);
+  }
+
+  if (!document.getElementById('sparkle-styles')) {
+    const style = document.createElement('style');
+    style.id = 'sparkle-styles';
+    style.textContent = `
+      @keyframes sparkleOut {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  setTimeout(() => {
+    sparkleContainer.remove();
+  }, 2000);
+}
+
+// Функція пульсації тексту виграшу
+function animatePrizeText() {
+  if (!document.getElementById('prize-pulse-styles')) {
+    const style = document.createElement('style');
+    style.id = 'prize-pulse-styles';
+    style.textContent = `
+      @keyframes prizePulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+      
+      @keyframes prizeGlow {
+        0%, 100% {
+          text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        50% {
+          text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                       0 0 40px rgba(255, 215, 0, 0.6),
+                       2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+      }
+      
+      .prize-popup h2.animated {
+        animation: prizePulse 0.6s ease-in-out 3,
+                   prizeGlow 1s ease-in-out 3;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  prizeText.classList.add('animated');
+  setTimeout(() => {
+    prizeText.classList.remove('animated');
+  }, 3000);
+}
+
 function getChatType() {
   const params = new URLSearchParams(window.location.search);
   return params.get("chat") || "fb";
@@ -40,19 +222,27 @@ function showPrizePopup(prize) {
   prizeText.textContent = prize;
   prizeOverlay.classList.add("show");
   
+  // Запускаємо всі ефекти
+  createConfetti();
+  createSparkles();
+  animatePrizeText();
+  
+  // Додаємо вібрацію (якщо підтримується)
+  if ('vibrate' in navigator) {
+    navigator.vibrate([200, 100, 200]);
+  }
+  
   setTimeout(() => {
     prizeOverlay.classList.remove("show");
   }, 3000);
 }
 
 function openInApp(url) {
-  // Створюємо тимчасове посилання
   const link = document.createElement('a');
   link.href = url;
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   
-  // Додаємо в DOM, клікаємо і видаляємо
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

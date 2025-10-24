@@ -1,32 +1,32 @@
 @font-face {
-  font-family: "Instagram Sans Regular";
+  font-family: "Instagram Sans";
   font-style: normal;
   font-weight: normal;
-  src: local("Instagram Sans Regular"), url("./assets/font/Instagram Sans.woff") format("woff");
+  src: local("Instagram Sans Regular"), url("./assets/font/Instagram Sans.ttf") format("truetype");
 }
 @font-face {
   font-family: "Instagram Sans Light";
   font-style: normal;
   font-weight: normal;
-  src: local("Instagram Sans Light"), url("./assets/font/Instagram Sans Light.woff") format("woff");
+  src: local("Instagram Sans Light"), url("./assets/font/Instagram Sans Light.ttf") format("truetype");
 }
 @font-face {
   font-family: "Instagram Sans Medium";
   font-style: normal;
   font-weight: normal;
-  src: local("Instagram Sans Medium"), url("./assets/font/Instagram Sans Medium.woff") format("woff");
+  src: local("Instagram Sans Medium"), url("./assets/font/Instagram Sans Medium.ttf") format("truetype");
 }
 @font-face {
   font-family: "Instagram Sans Bold";
   font-style: normal;
   font-weight: normal;
-  src: local("Instagram Sans Bold"), url("./assets/font/Instagram Sans Bold.woff") format("woff");
+  src: local("Instagram Sans Bold"), url("./assets/font/Instagram Sans Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Instagram Sans Headline Regular";
   font-style: normal;
   font-weight: normal;
-  src: local("Instagram Sans Headline Regular"), url("./assets/font/Instagram Sans Headline.woff") format("woff");
+  src: local("Instagram Sans Headline Regular"), url("./assets/font/Instagram Sans Headline.ttf") format("truetype");
 }
 .wheel-cover {
   display: flex;
@@ -82,7 +82,7 @@
   content: "";
   position: absolute;
   place-self: start center;
-  top: 0vh;
+  top: 0.5vh;
   z-index: 3;
 }
 .ui-wheel-of-fortune > * {
@@ -120,7 +120,7 @@
   display: grid;
   font-family: Instagram Sans;
   font-weight: 700;
-  font-size: 1.4vh;
+  font-size: 1.5vh;
   line-height: 12px;
   text-align: left;
   grid-area: 1/-1;
@@ -438,7 +438,24 @@ body {
   top: -2vh;
   right: 0;
 }
-.main button {
+.main .buttonContainer {
+  position: relative;
+}
+.main .buttonContainer::before {
+  content: " ";
+  position: absolute;
+  bottom: 60px;
+  background-image: url(./assets/images/nzg.png);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 90px;
+  width: 126px;
+  z-index: 1;
+  left: 50%;
+  transform: translate(-50%, 0%) !important;
+}
+.main .buttonContainer button {
   position: relative;
   border-radius: 10px;
   border: none;
@@ -451,38 +468,26 @@ body {
   width: 300px;
   height: 60px;
   background-color: #b8b8b8;
+  isolation: isolate;
   padding: 0;
   margin: 6vh auto 0;
   display: block;
   color: rgba(0, 0, 0, 0.4);
 }
-.main button.active {
+.main .buttonContainer button.active {
+  animation: pulse 2s infinite;
   background-image: url("./assets/images/blik_button.png");
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: contain;
   color: #ffffff;
 }
-.main button::before {
-  content: " ";
-  position: absolute;
-  bottom: 60px;
-  background-image: url(./assets/images/nzg.png);
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 90px;
-  width: 126px;
-  z-index: 1;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
 @keyframes pulse {
   0% {
     scale: 1;
   }
   50% {
-    scale: 1.02;
+    scale: 1.06;
   }
   100% {
     scale: 1;
