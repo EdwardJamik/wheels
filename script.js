@@ -1,12 +1,14 @@
 const wheel = document.getElementById("wheel");
 const spinButton = document.getElementById("spinButton");
 const fieldset = document.querySelector(".ui-wheel-of-fortune");
+const prizeOverlay = document.getElementById("prizeOverlay");
+const prizeText = document.getElementById("prizeText");
 
 let isSpinning = false;
 let previousEndDegree = 0;
 let spinCount = 0;
+let isGameFinished = false;
 
-// Ті самі написи, що й у HTML
 const prizes = [
   "5 % Sleva 💸",
   "Zatočit znovu 🔁",
@@ -22,37 +24,46 @@ const prizes = [
 
 const segmentAngle = 360 / prizes.length;
 
-// --- Дістаємо subscriber_id з URL ---
-function getSubscriberId() {
+const chatLinks = {
+  inst: "https://ig.me/m/pekelnavyzva.cz?ref=fortune-wheel",
+  tiktok: "https://tiktok.me/pekelnavyzva_cz?ref=w45935623&message=%E2%80%8C%EF%BB%BF%E2%80%8C%EF%BB%BF%E2%80%8B%EF%BB%BF%E2%80%8C%E2%80%8B%E2%80%8B%EF%BB%BF%E2%80%8C%E2%80%8C%E2%80%8B%EF%BB%BF%E2%80%8D%E2%80%8C%E2%80%8B%EF%BB%BF%E2%80%8B%EF%BB%BF%E2%80%8B%EF%BB%BF%E2%80%8C%E2%80%8C%E2%80%8B%EF%BB%BF%E2%80%8C%E2%80%8D%E2%80%8B%EF%BB%BF%E2%80%8B%E2%80%8D%E2%80%8B%EF%BB%BF%E2%80%8B%EF%BB%BFVYZVEDNOUT%20D%C3%81REK",
+  fb: "https://m.me/774169532447049?ref=fortune-wheel",
+  whatsapp: "https://wa.me/your_phone_number"
+};
+
+function getChatType() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("user_id") || "1234567890";
+  return params.get("chat") || "fb";
 }
 
-async function sendManyChat(subscriberId) {
-  const fieldId = 13791636;
-  try {
-    
-    const response = await fetch("https://api.manychat.com/fb/subscriber/setCustomField", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer 774169532447049:594ede525b07c459c4f96614d4f1be96"
-      },
-      body: JSON.stringify({
-        subscriber_id: subscriberId,
-        field_id: fieldId,
-        field_value: "done"
-      })
-    });
-    const data = await response.json();
-    console.log("✅ ManyChat response:", data);
-  } catch (err) {
-    console.error("❌ Помилка при надсиланні API:", err);
-  }
+function showPrizePopup(prize) {
+  prizeText.textContent = prize;
+  prizeOverlay.classList.add("show");
+  
+  //Ховаємо popup через 3 секунди
+  setTimeout(() => {
+    prizeOverlay.classList.remove("show");
+  }, 3000);
+}
+
+function convertButtonToLink() {
+  const chatType = getChatType();
+  const link = chatLinks[chatType] || chatLinks.fb;
+  
+  isGameFinished = true;
+  
+  spinButton.textContent = "VYZVEDNOUT DÁREK";
+  spinButton.classList.add("prize-link");
+  
+  spinButton.removeEventListener("click", handleSpin);
+  
+  spinButton.onclick = function() {
+    window.location.href = link;
+  };
 }
 
 function handleSpin() {
-  if (isSpinning) return;
+  if (isSpinning || isGameFinished) return;
   isSpinning = true;
 
   spinButton.classList.remove("active");
@@ -60,24 +71,17 @@ function handleSpin() {
 
   let prizeIndex, double = 0;
 
-  // --- Контроль результатів ---
   if (spinCount === 0) {
-    // перший раз — "Zatočit znovu 🔁"
     prizeIndex = prizes.findIndex(p => p.includes("Zatočit znovu"));
-    double = 200
+    double = 200;
   } else if (spinCount === 1) {
-    // другий раз — "2×VĚTŠÍ ŠANCE 💰"
     prizeIndex = prizes.findIndex(p => p.includes("2×VĚTŠÍ ŠANCE"));
-      double = 128
+    double = 128;
   } else {
     prizeIndex = Math.floor(Math.random() * prizes.length);
   }
 
-  // ⚙️ Обчислення правильного кута для реального сектору
-  // Колесо обертається за годинниковою, а сектори йдуть проти
-  // Тому розрахунок робимо з інверсією
   const targetAngle = double - (prizeIndex * segmentAngle + segmentAngle / 2);
-
   const spins = 5;
   const newEndDegree = previousEndDegree + spins * double + targetAngle;
   previousEndDegree = newEndDegree;
@@ -85,23 +89,32 @@ function handleSpin() {
   wheel.style.transition = "transform 6s cubic-bezier(0.44, -0.205, 0, 1.13)";
   wheel.style.transform = `rotate(${newEndDegree}deg)`;
 
-  setTimeout(async () => {
+  setTimeout(() => {
     isSpinning = false;
     fieldset.classList.add("active");
 
     const prize = prizes[prizeIndex];
+    
+    // Показуємо popup з призом
+    showPrizePopup(prize);
 
     if (prize.includes("Zatočit znovu")) {
       spinCount++;
-      spinButton.classList.add("active"); // можна ще один спін
+      // Показуємо кнопку після зникнення popup
+      setTimeout(() => {
+        spinButton.classList.add("active");
+      }, 3000);
     } else if (prize.includes("2×VĚTŠÍ ŠANCE")) {
       spinCount++;
-      spinButton.classList.remove("active");
-
-      const subscriberId = getSubscriberId();
-      await sendManyChat(subscriberId); // відправка в ManyChat
+      // Змінюємо кнопку після зникнення popup
+      setTimeout(() => {
+        convertButtonToLink();
+        spinButton.classList.add("active");
+      }, 3000);
     } else {
-      spinButton.classList.add("active");
+      setTimeout(() => {
+        spinButton.classList.add("active");
+      }, 3000);
     }
   }, 6000);
 }
