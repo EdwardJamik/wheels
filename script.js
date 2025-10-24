@@ -218,12 +218,13 @@ function getChatType() {
   return params.get("chat") || "fb";
 }
 
-function showPrizePopup(prize) {
+function showPrizePopup(prize, type) {
   prizeText.textContent = prize;
   prizeOverlay.classList.add("show");
   
   // Запускаємо всі ефекти
-  createConfetti();
+  if(type)
+    createConfetti();
   createSparkles();
   animatePrizeText();
   
@@ -298,15 +299,18 @@ function handleSpin() {
 
     const prize = prizes[prizeIndex];
     
-    showPrizePopup(prize);
 
     if (prize.includes("Zatočit znovu")) {
       spinCount++;
+    showPrizePopup(prize, false);
+
       setTimeout(() => {
         spinButton.classList.add("active");
       }, 3000);
     } else if (prize.includes("2×VĚTŠÍ ŠANCE")) {
       spinCount++;
+    showPrizePopup(prize, true);
+
       setTimeout(() => {
         convertButtonToLink();
         spinButton.classList.add("active");

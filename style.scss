@@ -142,16 +142,19 @@
       display: grid;
       font-family: Instagram Sans;
       font-weight: 700;
-      font-size: 1.5vh;
-      line-height: 12px;
+      font-size: 16px;
+      line-height: 18px;
       text-align: left;
       grid-area: 1 / -1;
       padding-left: 1vh;
       rotate: calc(360deg / var(--_items) * (var(--_idx) - 1));
       transform-origin: center right;
+      -webkit-user-select: none;
+      -moz-user-select: none;
       user-select: none;
       width: 50cqi;
       color: #fff;
+      // text-align: center;
 
       &:nth-child(1) {
         background: #ffcf02;
@@ -163,8 +166,9 @@
 
       &:nth-child(3) {
         background: linear-gradient(148.05deg, #a4631b -18.81%, #fffb90 91.04%);
-        padding-left: 10px;
-        letter-spacing: -5%;
+        padding-left: 3vh;
+        font-size: 14px;
+        line-height: 18px;
       }
 
       &:nth-child(4) {
