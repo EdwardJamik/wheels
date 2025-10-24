@@ -138,6 +138,9 @@
 }
 .ui-wheel-of-fortune ul li:nth-child(2) {
   background: #f40301;
+  padding-left: 3vh;
+  font-size: 14px;
+  line-height: 18px;
 }
 .ui-wheel-of-fortune ul li:nth-child(3) {
   background: linear-gradient(148.05deg, #a4631b -18.81%, #fffb90 91.04%);
@@ -147,6 +150,9 @@
 }
 .ui-wheel-of-fortune ul li:nth-child(4) {
   background: #14b901;
+  padding-left: 3vh;
+  font-size: 14px;
+  line-height: 18px;
 }
 .ui-wheel-of-fortune ul li:nth-child(5) {
   background: #0c99fa;
@@ -156,12 +162,18 @@
 }
 .ui-wheel-of-fortune ul li:nth-child(7) {
   background: #f40301;
+  padding-left: 3vh;
+  font-size: 14px;
+  line-height: 18px;
 }
 .ui-wheel-of-fortune ul li:nth-child(8) {
   background: #0c99fa;
 }
 .ui-wheel-of-fortune ul li:nth-child(9) {
   background: #14b901;
+  padding-left: 3vh;
+  font-size: 14px;
+  line-height: 18px;
 }
 .ui-wheel-of-fortune ul li:nth-child(10) {
   background: #0c99fa;
