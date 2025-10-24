@@ -31,7 +31,6 @@ const chatLinks = {
   whatsapp: "https://wa.me/your_phone_number"
 };
 
-// Функція створення конфеті
 function createConfetti() {
   const confettiContainer = document.createElement('div');
   confettiContainer.className = 'confetti-container';
@@ -77,7 +76,6 @@ function createConfetti() {
     confettiContainer.appendChild(confetti);
   }
 
-  // Додаємо анімації
   if (!document.getElementById('confetti-styles')) {
     const style = document.createElement('style');
     style.id = 'confetti-styles';
@@ -105,13 +103,11 @@ function createConfetti() {
     document.head.appendChild(style);
   }
 
-  // Видаляємо конфеті через 5 секунд
   setTimeout(() => {
     confettiContainer.remove();
   }, 5000);
 }
 
-// Функція створення спалахів світла
 function createSparkles() {
   const sparkleContainer = document.createElement('div');
   sparkleContainer.className = 'sparkle-container';
@@ -173,7 +169,6 @@ function createSparkles() {
   }, 2000);
 }
 
-// Функція пульсації тексту виграшу
 function animatePrizeText() {
   if (!document.getElementById('prize-pulse-styles')) {
     const style = document.createElement('style');
@@ -222,13 +217,11 @@ function showPrizePopup(prize, type) {
   prizeText.textContent = prize;
   prizeOverlay.classList.add("show");
   
-  // Запускаємо всі ефекти
   if(type)
     createConfetti();
   createSparkles();
   animatePrizeText();
   
-  // Додаємо вібрацію (якщо підтримується)
   if ('vibrate' in navigator) {
     navigator.vibrate([200, 100, 200]);
   }
