@@ -40,10 +40,22 @@ function showPrizePopup(prize) {
   prizeText.textContent = prize;
   prizeOverlay.classList.add("show");
   
-  //Ховаємо popup через 3 секунди
   setTimeout(() => {
     prizeOverlay.classList.remove("show");
   }, 3000);
+}
+
+function openInApp(url) {
+  // Створюємо тимчасове посилання
+  const link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  
+  // Додаємо в DOM, клікаємо і видаляємо
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function convertButtonToLink() {
@@ -57,8 +69,9 @@ function convertButtonToLink() {
   
   spinButton.removeEventListener("click", handleSpin);
   
-  spinButton.onclick = function() {
-    window.location.href = link;
+  spinButton.onclick = function(e) {
+    e.preventDefault();
+    openInApp(link);
   };
 }
 
@@ -95,18 +108,15 @@ function handleSpin() {
 
     const prize = prizes[prizeIndex];
     
-    // Показуємо popup з призом
     showPrizePopup(prize);
 
     if (prize.includes("Zatočit znovu")) {
       spinCount++;
-      // Показуємо кнопку після зникнення popup
       setTimeout(() => {
         spinButton.classList.add("active");
       }, 3000);
     } else if (prize.includes("2×VĚTŠÍ ŠANCE")) {
       spinCount++;
-      // Змінюємо кнопку після зникнення popup
       setTimeout(() => {
         convertButtonToLink();
         spinButton.classList.add("active");
